@@ -2,20 +2,12 @@ import { useState } from "react";
 
 const Header = ({ text }) => <h1>{text}</h1>;
 
-const StatisticLine = ({ text, value }) => {
-  if (text === "positive") {
-    return (
-      <p>
-        {text} {value} %
-      </p>
-    );
-  }
-  return (
-    <p>
-      {text} {value}
-    </p>
-  );
-};
+const TableRow = ({ text, value }) => (
+  <tr>
+    <td>{text}</td>
+    <td>{`${text === "positive" ? value + " %" : value}`}</td>
+  </tr>
+);
 
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad;
@@ -28,14 +20,16 @@ const Statistics = ({ good, neutral, bad }) => {
   const positive = (good / all) * 100;
 
   return (
-    <div>
-      <StatisticLine text="good" value={good} />
-      <StatisticLine text="neutral" value={neutral} />
-      <StatisticLine text="bad" value={bad} />
-      <StatisticLine text="all" value={all} />
-      <StatisticLine text="average" value={average} />
-      <StatisticLine text="positive" value={positive} />
-    </div>
+    <table>
+      <tbody>
+        <TableRow text="good" value={good} />
+        <TableRow text="neutral" value={neutral} />
+        <TableRow text="bad" value={bad} />
+        <TableRow text="all" value={all} />
+        <TableRow text="average" value={average} />
+        <TableRow text="positive" value={positive} />
+      </tbody>
+    </table>
   );
 };
 
