@@ -53,11 +53,11 @@ const App = () => {
     filterText === ""
       ? persons
       : persons.filter((person) =>
-          person.name.toLowerCase().includes(filterText)
+          person.name.toLowerCase().includes(filterText.toLowerCase())
         );
 
   const handleFilterChange = (event) => {
-    const newFilterText = event.target.value.toLowerCase();
+    const newFilterText = event.target.value;
     setFilterText(newFilterText);
   };
 
@@ -71,10 +71,9 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const personObject = {
+    const newPersonObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     };
 
     if (persons.findIndex((persona) => persona.name === newName) !== -1) {
@@ -84,9 +83,13 @@ const App = () => {
       return;
     }
 
-    setPersons(persons.concat(personObject));
-    setNewName("");
-    setNewNumber("");
+    axios
+      .post("http://localhost:3001/persons", newPersonObject)
+      .then((response) => {
+        setPersons(persons.concat(response.data));
+        setNewName("");
+        setNewNumber("");
+      });
   };
 
   return (
