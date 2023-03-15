@@ -14,6 +14,12 @@ const App = () => {
       name: newName,
     };
 
+    if (persons.findIndex((persona) => persona.name === newName) !== -1) {
+      alert(`${newName} is already added to phonebook`);
+      setNewName("");
+      return;
+    }
+
     setPersons(persons.concat(personObject));
     setNewName("");
   };
