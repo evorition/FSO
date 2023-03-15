@@ -1,41 +1,10 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 
-const Filter = ({ value, handler }) => (
-  <div>
-    filter shown with
-    <input value={value} onChange={handler} />
-  </div>
-);
+import personService from "./services/persons";
 
-const PersonForm = (props) => (
-  <form onSubmit={props.addPerson}>
-    <div>
-      name: <input value={props.newName} onChange={props.handleNameChange} />
-    </div>
-    <div>
-      number:{" "}
-      <input value={props.newNumber} onChange={props.handleNumberChange} />
-    </div>
-    <div>
-      <button type="submit">add</button>
-    </div>
-  </form>
-);
-
-const Person = ({ name, number }) => (
-  <p>
-    {name} {number}
-  </p>
-);
-
-const Persons = ({ persons }) => (
-  <div>
-    {persons.map((person) => (
-      <Person key={person.id} name={person.name} number={person.number} />
-    ))}
-  </div>
-);
+import Persons from "./components/Persons";
+import PersonForm from "./components/PersonForm";
+import Filter from "./components/Filter";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -44,8 +13,8 @@ const App = () => {
   const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -83,13 +52,11 @@ const App = () => {
       return;
     }
 
-    axios
-      .post("http://localhost:3001/persons", newPersonObject)
-      .then((response) => {
-        setPersons(persons.concat(response.data));
-        setNewName("");
-        setNewNumber("");
-      });
+    personService.create(newPersonObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   return (
