@@ -44,19 +44,36 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
+    const existingPersonIndex = persons.findIndex(
+      (person) => person.name === newName
+    );
 
-    if (persons.findIndex((persona) => persona.name === newName) !== -1) {
-      alert(`${newName} is already added to phonebook`);
-      setNewName("");
-      setNewNumber("");
-      return;
+    if (existingPersonIndex !== -1) {
+      const person = persons[existingPersonIndex];
+
+      if (person.number === newNumber) {
+        alert(`${person.name} is already added to phonebook`);
+      } else if (
+        window.confirm(
+          `${person.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        personService
+          .update(person.id, newPersonObject)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((p) => (p.id !== person.id ? p : returnedPerson))
+            );
+          });
+      }
+    } else if (existingPersonIndex === -1) {
+      personService.create(newPersonObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+      });
     }
 
-    personService.create(newPersonObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName("");
-      setNewNumber("");
-    });
+    setNewName("");
+    setNewNumber("");
   };
 
   const deletePerson = (id) => {
