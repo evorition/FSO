@@ -13,6 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterText, setFilterText] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  const [errorClassName, setErrorClassName] = useState("");
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -40,10 +41,14 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
-  const showNotification = (message) => {
+  const showNotification = (message, isError) => {
     setErrorMessage(message);
+    if (isError) {
+      setErrorClassName("error");
+    }
     setTimeout(() => {
       setErrorMessage(null);
+      setErrorClassName("");
     }, 5000);
   };
 
@@ -74,6 +79,13 @@ const App = () => {
               persons.map((p) => (p.id !== person.id ? p : returnedPerson))
             );
             showNotification(`Changed phone number for ${person.name}`);
+          })
+          .catch((error) => {
+            setPersons(persons.filter((p) => p.id !== person.id));
+            showNotification(
+              `Information of ${person.name} has already been removed from the server`,
+              true
+            );
           });
       }
     } else if (existingPersonIndex === -1) {
@@ -91,16 +103,25 @@ const App = () => {
     const deletedPersonName = persons.find((person) => person.id === id).name;
 
     if (window.confirm(`Delete ${deletedPersonName}?`)) {
-      personService.remove(id).then(() => {
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      personService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          setPersons(persons.filter((person) => person.id !== id));
+          showNotification(
+            `Information of ${deletedPersonName} has already been removed from the server`,
+            true
+          );
+        });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} errorClassName={errorClassName} />
       <Filter value={filterText} handler={handleFilterChange} />
       <h2>add a new </h2>
       <PersonForm
