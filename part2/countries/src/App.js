@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const ListCountries = ({ countries }) => (
+const ListCountries = ({ countries, showCountry }) => (
   <div>
     {countries.map((country) => (
-      <div key={country.cca2}>{country.name.common}</div>
+      <div key={country.cca2}>
+        {country.name.common}
+        <button onClick={() => showCountry(country.name.common)}>show</button>
+      </div>
     ))}
   </div>
 );
@@ -25,7 +28,7 @@ const CountryDetails = ({ country }) => (
   </div>
 );
 
-const Countries = ({ filteredCountries }) => {
+const Countries = ({ filteredCountries, showCountry }) => {
   if (!filteredCountries) {
     return null;
   } else if (filteredCountries.length === 1) {
@@ -33,7 +36,9 @@ const Countries = ({ filteredCountries }) => {
   } else if (filteredCountries.length > 10) {
     return <div>Too many matches, specify another filter</div>;
   } else {
-    return <ListCountries countries={filteredCountries} />;
+    return (
+      <ListCountries countries={filteredCountries} showCountry={showCountry} />
+    );
   }
 };
 
@@ -59,6 +64,13 @@ const App = () => {
     setFilteredCountries(newFilteredCountries);
   }, [countries, country]);
 
+  const showCountry = (countryName) => {
+    const choosenCountry = countries.filter(
+      (c) => c.name.common === countryName
+    );
+    setFilteredCountries(choosenCountry);
+  };
+
   const handleChange = (event) => {
     setCountry(event.target.value);
   };
@@ -68,7 +80,10 @@ const App = () => {
       <div>
         find countries <input value={country} onChange={handleChange} />
       </div>
-      <Countries filteredCountries={filteredCountries} />
+      <Countries
+        filteredCountries={filteredCountries}
+        showCountry={showCountry}
+      />
     </div>
   );
 };
