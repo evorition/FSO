@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 let persons = [
   {
@@ -44,6 +45,37 @@ app.delete("/api/persons/:id", (request, response) => {
   persons = persons.filter((person) => person.id !== id);
 
   response.status(204).end();
+});
+
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+  let error = null;
+
+  switch (true) {
+    case persons.some((person) => person.name === body.name):
+      error = "name must be unique";
+      break;
+    case !body.name:
+      error = "name is missing";
+      break;
+    case !body.number:
+      error = "number is missing";
+      break;
+  }
+
+  if (error) {
+    return response.status(400).json({ error });
+  }
+
+  const person = {
+    id: Math.floor(Math.random() * 1_000_000_000),
+    name: body.name,
+    number: body.number,
+  };
+
+  persons = persons.concat(person);
+
+  response.json(person);
 });
 
 app.get("/info", (request, response) => {
