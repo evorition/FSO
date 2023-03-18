@@ -6,6 +6,7 @@ const app = express();
 
 morgan.token("post-data", (request) => JSON.stringify(request.body));
 
+app.use(express.static("build"));
 app.use(cors());
 app.use(express.json());
 app.use(morgan("tiny", { skip: (request) => request.method === "POST" }));
