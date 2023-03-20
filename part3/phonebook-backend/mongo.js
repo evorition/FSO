@@ -18,7 +18,7 @@ const personSchema = mongoose.Schema({
 
 const Person = mongoose.model("Person", personSchema);
 
-if (process.argv.length == 5) {
+if (process.argv.length === 5) {
   console.log("phonebook:");
   Person.find({}).then((persons) => {
     persons.forEach((person) => {
