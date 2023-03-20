@@ -62,11 +62,8 @@ const App = () => {
           showNotification(`Changed phone number for ${person.name}`);
         })
         .catch((error) => {
-          setPersons(persons.filter((p) => p.id !== person.id));
-          showNotification(
-            `Information of ${person.name} has already been removed from the server`,
-            true
-          );
+          console.log(error.response.data.error);
+          showNotification(error.response.data.error, true);
         });
     }
 
