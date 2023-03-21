@@ -129,3 +129,26 @@ describe("author with most blogs", () => {
     });
   });
 });
+
+describe("author with most likes", () => {
+  test("of empty list is empty object", () => {
+    const result = listHelper.mostLikes([]);
+    expect(result).toEqual({});
+  });
+
+  test("of list with one blog is object with person in this list", () => {
+    const result = listHelper.mostLikes(listWithOneBlog);
+    expect(result).toEqual({
+      author: "Edsger W. Dijkstra",
+      likes: 5,
+    });
+  });
+
+  test("of a large list calculated right", () => {
+    const result = listHelper.mostLikes(blogs);
+    expect(result).toEqual({
+      author: "Edsger W. Dijkstra",
+      likes: 17,
+    });
+  });
+});
