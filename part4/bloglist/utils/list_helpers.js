@@ -25,17 +25,17 @@ const mostBlogs = (blogs) => {
     return {};
   }
 
-  const authors = blogs.reduce((op, blog) => {
+  const authorsWithBlogs = blogs.reduce((op, blog) => {
     op[blog.author] = (op[blog.author] ?? 0) + 1;
     return op;
   }, {});
-  const author = Object.keys(authors).reduce((a, b) =>
-    authors[a] > authors[b] ? a : b
+  const authorWithMostBlogs = Object.keys(authorsWithBlogs).reduce((a, b) =>
+    authorsWithBlogs[a] > authorsWithBlogs[b] ? a : b
   );
 
   return {
-    author: author,
-    blogs: authors[author],
+    author: authorWithMostBlogs,
+    blogs: authorsWithBlogs[authorWithMostBlogs],
   };
 };
 
