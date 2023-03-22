@@ -23,6 +23,12 @@ test("blogs returned as json and have the same length", async () => {
   expect(responseBlogs.body).toHaveLength(helper.initialBlogs.length);
 });
 
+test("blog objects should have id property", async () => {
+  const responseBlogs = await api.get("/api/blogs");
+
+  expect(responseBlogs.body[0].id).toBeDefined();
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
