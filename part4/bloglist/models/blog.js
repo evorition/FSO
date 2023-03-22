@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const blogSchema = mongoose.Schema({
-  title: String,
+  title: { type: String, required: "Title is required" },
   author: String,
-  url: String,
+  url: { type: String, required: "URL is required" },
   likes: { type: Number, default: 0 },
 });
 

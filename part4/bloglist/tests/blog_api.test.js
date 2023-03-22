@@ -64,6 +64,26 @@ test("blog post without likes should default to 0 likes", async () => {
   expect(likes).toBe(0);
 });
 
+test("blog post without title  should return 400", async () => {
+  const blogPostWithoutTitle = {
+    author: "Barack Obama",
+    url: "example.com",
+    likes: 12,
+  };
+
+  await api.post("/api/blogs").send(blogPostWithoutTitle).expect(400);
+});
+
+test("blog posts without URL should return 400", async () => {
+  const blogPostWithoutUrl = {
+    title: "Without url",
+    author: "Barack Obama",
+    likes: 12,
+  };
+
+  await api.post("/api/blogs").send(blogPostWithoutUrl).expect(400);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
