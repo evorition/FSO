@@ -51,6 +51,19 @@ test("valid blog can be added", async () => {
   expect(titles).toContain("Test blog");
 });
 
+test("blog post without likes should default to 0 likes", async () => {
+  const newBlogWithoutLikes = {
+    title: "Blog without likes",
+    author: "Ryan Gosling",
+    url: "example.com",
+  };
+
+  const response = await api.post("/api/blogs").send(newBlogWithoutLikes);
+  const likes = response.body.likes;
+
+  expect(likes).toBe(0);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
