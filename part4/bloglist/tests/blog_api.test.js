@@ -6,7 +6,7 @@ const api = supertest(app);
 
 const Blog = require("../models/blog");
 
-beforeAll(async () => {
+beforeEach(async () => {
   await Blog.deleteMany({});
 
   const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
@@ -96,6 +96,30 @@ test("deletion of a blog succeed with 204 status code", async () => {
   const titles = blogsAtEnd.map((blog) => blog.title);
 
   expect(titles).not.toContain("My new awesome blog post");
+});
+
+test("successfully updates existing blog", async () => {
+  const blogsAtStart = await helper.blogsInDb();
+  const blogToUpdate = blogsAtStart[0];
+  const updatedBlog = {
+    title: blogToUpdate.title,
+    author: blogToUpdate.author,
+    url: blogToUpdate.url,
+    likes: 32,
+  };
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+  const updatedBlogLikes = blogsAtEnd[0].likes;
+
+  expect(updatedBlogLikes).toBe(32);
 });
 
 afterAll(async () => {
