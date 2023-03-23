@@ -84,6 +84,20 @@ test("blog posts without URL should return 400", async () => {
   await api.post("/api/blogs").send(blogPostWithoutUrl).expect(400);
 });
 
+test("deletion of a blog succeed with 204 status code", async () => {
+  const blogsAtStart = await helper.blogsInDb();
+  const blogToDelete = blogsAtStart[0];
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+  const titles = blogsAtEnd.map((blog) => blog.title);
+
+  expect(titles).not.toContain("My new awesome blog post");
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
