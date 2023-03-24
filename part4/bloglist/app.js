@@ -8,6 +8,8 @@ const middleware = require("./utils/middleware");
 
 const app = express();
 
+mongoose.set("strictQuery", false);
+
 const mongoUrl = MONGODB_URL;
 mongoose.connect(mongoUrl);
 
