@@ -17,6 +17,7 @@ mongoose.connect(mongoUrl);
 
 app.use(cors());
 app.use(express.json());
+app.use(middleware.getTokenFrom);
 app.use("/api/login/", loginRouter);
 app.use("/api/blogs/", blogsRouter);
 app.use("/api/users/", usersRouter);
