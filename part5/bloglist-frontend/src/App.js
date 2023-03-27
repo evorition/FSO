@@ -16,7 +16,9 @@ const App = () => {
   const [info, setInfo] = useState({ message: null });
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService
+      .getAll()
+      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
   }, []);
 
   useEffect(() => {
@@ -79,7 +81,10 @@ const App = () => {
     };
 
     const returnedBlog = await blogService.update(id, updateBlog);
-    setBlogs(blogs.map((b) => (b.id !== id ? b : returnedBlog)));
+    const sortedBlogs = blogs
+      .map((b) => (b.id !== id ? b : returnedBlog))
+      .sort((a, b) => b.likes - a.likes);
+    setBlogs(sortedBlogs);
   };
 
   if (user === null) {
