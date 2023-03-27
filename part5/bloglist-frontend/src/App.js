@@ -68,6 +68,20 @@ const App = () => {
     );
   };
 
+  const updateLikes = async (id) => {
+    const blog = blogs.find((b) => b.id === id);
+    const updateBlog = {
+      user: blog.user._id,
+      likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+    };
+
+    const returnedBlog = await blogService.update(id, updateBlog);
+    setBlogs(blogs.map((b) => (b.id !== id ? b : returnedBlog)));
+  };
+
   if (user === null) {
     return (
       <div>
@@ -113,7 +127,11 @@ const App = () => {
           <BlogForm createBlog={createBlog} />
         </Toggleable>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            updateLikes={() => updateLikes(blog.id)}
+          />
         ))}
       </div>
     </div>
