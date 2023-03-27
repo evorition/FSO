@@ -10,7 +10,10 @@ blogsRouter.get("/", async (request, response) => {
 
 blogsRouter.post("/", userExtractor, async (request, response, next) => {
   const user = request.user;
-  const blog = new Blog({ ...request.body, user: user._id });
+  const blog = await new Blog({ ...request.body, user: user._id }).populate(
+    "user",
+    { username: 1, name: 1 }
+  );
 
   try {
     const result = await blog.save();

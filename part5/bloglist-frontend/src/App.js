@@ -60,6 +60,7 @@ const App = () => {
 
   const createBlog = async (blogObject) => {
     const returnedBlog = await blogService.create(blogObject);
+
     setBlogs(blogs.concat(returnedBlog));
     blogFormRef.current.toggleVisibility();
     showNotification(
