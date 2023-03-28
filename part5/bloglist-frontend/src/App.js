@@ -87,6 +87,18 @@ const App = () => {
     setBlogs(sortedBlogs);
   };
 
+  const removeBlog = async (id) => {
+    const blogToDelete = blogs.find((b) => b.id === id);
+    const ok = window.confirm(
+      `Remove blog ${blogToDelete.title} by ${blogToDelete.author}`
+    );
+    if (ok) {
+      await blogService.remove(id);
+
+      setBlogs(blogs.filter((blog) => blog.id !== id));
+    }
+  };
+
   if (user === null) {
     return (
       <div>
@@ -135,7 +147,9 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
+            username={user.username}
             updateLikes={() => updateLikes(blog.id)}
+            removeBlog={() => removeBlog(blog.id)}
           />
         ))}
       </div>
