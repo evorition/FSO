@@ -36,4 +36,18 @@ describe("Blog component", () => {
 
     expect(expandedElement).toBeVisible();
   });
+
+  test("", async () => {
+    const updateLikes = jest.fn();
+
+    const { container } = render(
+      <Blog blog={blog} updateLikes={updateLikes} />
+    );
+
+    const user = userEvent.setup();
+    const button = screen.getByText("like");
+    await user.dblClick(button);
+
+    expect(updateLikes.mock.calls).toHaveLength(2);
+  });
 });
