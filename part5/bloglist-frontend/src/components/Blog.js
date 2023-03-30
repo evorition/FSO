@@ -15,16 +15,17 @@ const Blog = ({ blog, username, updateLikes, removeBlog }) => {
 
   return (
     <div style={blogStyle}>
-      <div>
+      <div className="compact-blog">
         {blog.title} {blog.author}
         <button onClick={() => setExpand(!expand)}>
           {expand ? "hide" : "show"}
         </button>
       </div>
-      <div style={showWhenExpanded}>
+      <div style={showWhenExpanded} className="expanded-blog">
         <div>{blog.url}</div>
         <div>
-          likes {blog.likes} <button onClick={updateLikes}>like</button>
+          likes {blog.likes}
+          <button onClick={updateLikes}>like</button>
         </div>
         <div>{blog.user.name}</div>
         {username === blog.user.username && (
