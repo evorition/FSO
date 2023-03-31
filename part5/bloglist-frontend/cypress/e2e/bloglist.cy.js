@@ -1,13 +1,12 @@
 describe("Bloglist", () => {
   beforeEach(() => {
-    cy.request("POST", "http://localhost:3001/api/testing/reset");
-    const user = {
+    cy.request("POST", `${Cypress.env("BACKEND")}/testing/reset`);
+
+    cy.createUser({
       username: "testing",
       name: "Name Surname",
       password: "password",
-    };
-    cy.request("POST", "http://localhost:3001/api/users", user);
-    cy.visit("http://localhost:3000");
+    });
   });
 
   it("Login form is shown", () => {
@@ -39,16 +38,7 @@ describe("Bloglist", () => {
 
     describe("When logged in", () => {
       beforeEach(() => {
-        const credentials = {
-          username: "testing",
-          password: "password",
-        };
-        cy.request("POST", "http://localhost:3001/api/login", credentials).then(
-          ({ body }) => {
-            localStorage.setItem("loggedUser", JSON.stringify(body));
-            cy.visit("http://localhost:3000");
-          }
-        );
+        cy.login({ username: "testing", password: "password" });
       });
 
       it("A blog can be created", () => {
@@ -81,6 +71,18 @@ describe("Bloglist", () => {
           cy.contains("remove").click();
 
           cy.contains("New blog Name Surname").should("not.exist");
+        });
+
+        it("delete button only visible to blog creator", () => {
+          cy.createUser({
+            username: "testing2",
+            name: "Second User",
+            password: "password",
+          });
+          cy.login({ username: "testing2", password: "password" });
+
+          cy.contains("New blog Name Surname").contains("show").click();
+          cy.contains("remove").should("not.exist");
         });
       });
     });
