@@ -36,5 +36,31 @@ describe("Bloglist", () => {
 
       cy.get("html").should("not.contain", "Name Surname logged in");
     });
+
+    describe("When logged in", () => {
+      beforeEach(() => {
+        const credentials = {
+          username: "testing",
+          password: "password",
+        };
+        cy.request("POST", "http://localhost:3001/api/login", credentials).then(
+          ({ body }) => {
+            localStorage.setItem("loggedUser", JSON.stringify(body));
+            cy.visit("http://localhost:3000");
+          }
+        );
+      });
+
+      it("A blog can be created", () => {
+        cy.contains("new blog").click();
+
+        cy.get("#title").type("New blog");
+        cy.get("#author").type("Name Surname");
+        cy.get("#url").type("www.google.come");
+        cy.get("#create-button").click();
+
+        cy.contains("New blog Name Surname");
+      });
+    });
   });
 });
