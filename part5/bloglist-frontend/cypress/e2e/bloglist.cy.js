@@ -75,6 +75,13 @@ describe("Bloglist", () => {
           cy.contains("New blog Name Surname").contains("show").click();
           cy.contains("like").click();
         });
+
+        it("can be deleted by the user who created it", () => {
+          cy.contains("New blog Name Surname").contains("show").click();
+          cy.contains("remove").click();
+
+          cy.contains("New blog Name Surname").should("not.exist");
+        });
       });
     });
   });
