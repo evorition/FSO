@@ -61,6 +61,21 @@ describe("Bloglist", () => {
 
         cy.contains("New blog Name Surname");
       });
+
+      describe("and a blog exists", () => {
+        beforeEach(() => {
+          cy.createBlog({
+            title: "New blog",
+            author: "Name Surname",
+            url: "www.google.com",
+          });
+        });
+
+        it("it can be liked", () => {
+          cy.contains("New blog Name Surname").contains("show").click();
+          cy.contains("like").click();
+        });
+      });
     });
   });
 });
