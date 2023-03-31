@@ -12,7 +12,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
-  plugins: ["react", "jest"],
+  plugins: ["react", "jest", "cypress"],
   rules: {
     eqeqeq: "error",
     "no-trailing-spaces": "error",
