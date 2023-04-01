@@ -84,6 +84,46 @@ describe("Bloglist", () => {
           cy.contains("New blog Name Surname").contains("show").click();
           cy.contains("remove").should("not.exist");
         });
+
+        it("blogs are orders from the most liked to the least", () => {
+          cy.createBlog({
+            title: "The title with most likes",
+            author: "Name Surname",
+            url: "www.google.com",
+          });
+          cy.createBlog({
+            title: "The title with the second likes",
+            author: "Name Surname",
+            url: "www.google.com",
+          });
+
+          cy.contains("The title with most likes").contains("show").click();
+          cy.contains("The title with most likes")
+            .parent()
+            .contains("button", "like")
+            .click()
+            .wait(1000)
+            .click()
+            .wait(1000)
+            .click()
+            .wait(1000);
+
+          cy.contains("The title with the second likes")
+            .contains("show")
+            .click();
+          cy.contains("The title with the second likes")
+            .parent()
+            .contains("button", "like")
+            .click()
+            .wait(1000)
+            .click();
+
+          cy.get(".blog").eq(0).should("contain", "The title with most likes");
+          cy.get(".blog")
+            .eq(1)
+            .should("contain", "The title with the second likes");
+          cy.get(".blog").eq(2).should("contain", "New blog");
+        });
       });
     });
   });

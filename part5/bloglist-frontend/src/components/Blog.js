@@ -14,7 +14,7 @@ const Blog = ({ blog, username, updateLikes, removeBlog }) => {
   const showWhenExpanded = { display: expand ? "" : "none" };
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <div className="compact-blog">
         {blog.title} {blog.author}
         <button onClick={() => setExpand(!expand)}>
