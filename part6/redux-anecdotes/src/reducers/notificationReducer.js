@@ -9,7 +9,7 @@ const filterSlice = createSlice({
   name: "filter",
   initialState,
   reducers: {
-    showNotification(state, action) {
+    setNotification(state, action) {
       return {
         message: action.payload,
         display: "",
@@ -21,12 +21,15 @@ const filterSlice = createSlice({
   },
 });
 
-export const displayNotification = (message) => (dispatch) => {
-  dispatch(showNotification(message));
-  setTimeout(() => {
-    dispatch(removeNotification());
-  }, 5000);
+export const { setNotification, removeNotification } = filterSlice.actions;
+
+export const displayNotification = (message, timeToWait) => {
+  return (dispatch) => {
+    dispatch(setNotification(message));
+    setTimeout(() => {
+      dispatch(removeNotification());
+    }, timeToWait * 1000);
+  };
 };
 
-export const { showNotification, removeNotification } = filterSlice.actions;
 export default filterSlice.reducer;
