@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = ({ blog, username, updateLikes, removeBlog }) => {
+const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,22 +15,22 @@ const Blog = ({ blog, username, updateLikes, removeBlog }) => {
 
   return (
     <div style={blogStyle} className="blog">
-      <div className="compact-blog">
-        {blog.title} {blog.author}
-        <button onClick={() => setExpand(!expand)}>
-          {expand ? "hide" : "show"}
-        </button>
-      </div>
+      {blog.title} {blog.author}
+      <button onClick={() => setExpand(!expand)}>
+        {expand ? "hide" : "show"}
+      </button>
       <div style={showWhenExpanded} className="expanded-blog">
-        <div>{blog.url}</div>
+        <div>
+          <a href={blog.url}>{blog.url}</a>
+        </div>
         <div>
           likes {blog.likes}
-          <button onClick={updateLikes}>like</button>
+          {/* <button onClick={updateLikes}>like</button> */}
         </div>
         <div>{blog.user.name}</div>
-        {username === blog.user.username && (
+        {/* {username === blog.user.username && (
           <button onClick={removeBlog}>remove</button>
-        )}
+        )} */}
       </div>
     </div>
   );
