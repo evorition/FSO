@@ -7,8 +7,8 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import LoginForm from "./components/LoginForm";
 
-import blogService from "./services/blogs";
 import loginService from "./services/login";
+import userService from "./services/user";
 
 import { displayNotification } from "./reducers/notificationReducer";
 import { initializeBlogs } from "./reducers/blogReducer";
@@ -23,12 +23,8 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedUser");
-    if (loggedUserJSON !== null) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
+    const user = userService.getUser();
+    setUser(user);
   }, []);
 
   const blogFormRef = useRef();
@@ -37,8 +33,7 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password });
       setUser(user);
-      window.localStorage.setItem("loggedUser", JSON.stringify(user));
-      blogService.setToken(user.token);
+      userService.setUser(user);
       dispatch(displayNotification(`${user.name} logged in`));
     } catch (exception) {
       dispatch(displayNotification("wrong username or password", "error"));
@@ -47,7 +42,7 @@ const App = () => {
 
   const handleLogout = () => {
     setUser(null);
-    window.localStorage.removeItem("loggedUser");
+    userService.clearUser();
   };
 
   if (user === null) {
