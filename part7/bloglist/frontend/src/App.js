@@ -1,19 +1,24 @@
 import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+
 import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
+
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
+import { displayNotification } from "./reducers/notificationReducer";
+
 const App = () => {
+  const dispatch = useDispatch();
+
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [info, setInfo] = useState({ message: null });
 
   useEffect(() => {
     blogService
@@ -32,14 +37,6 @@ const App = () => {
 
   const blogFormRef = useRef();
 
-  const showNotification = (message, type = "info") => {
-    setInfo({ message, type });
-
-    setTimeout(() => {
-      setInfo({ message: null });
-    }, 5000);
-  };
-
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -50,9 +47,9 @@ const App = () => {
       setUser(user);
       setUsername("");
       setPassword("");
-      showNotification(`${user.name} logged in`);
+      dispatch(displayNotification(`${user.name} logged in`));
     } catch (exception) {
-      showNotification("wrong username or password", "error");
+      dispatch(displayNotification("wrong username or password", "error"));
     }
   };
 
@@ -66,8 +63,10 @@ const App = () => {
 
     setBlogs(blogs.concat(returnedBlog));
     blogFormRef.current.toggleVisibility();
-    showNotification(
-      `a new blog ${blogObject.title} by ${blogObject.author} added`
+    dispatch(
+      displayNotification(
+        `a new blog ${blogObject.title} by ${blogObject.author} added`
+      )
     );
   };
 
@@ -104,7 +103,7 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
-        <Notification info={info} />
+        <Notification />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -138,7 +137,7 @@ const App = () => {
     <div>
       <div>
         <h2>blogs</h2>
-        <Notification info={info} />
+        <Notification />
         <p>
           {user.name} logged in
           <button onClick={handleLogout}>logout</button>
