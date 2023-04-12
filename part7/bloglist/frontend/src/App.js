@@ -5,6 +5,7 @@ import BlogList from "./components/BlogList";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
+import LoginForm from "./components/LoginForm";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -16,9 +17,6 @@ const App = () => {
   const dispatch = useDispatch();
 
   const [user, setUser] = useState(null);
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -35,16 +33,12 @@ const App = () => {
 
   const blogFormRef = useRef();
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
+  const login = async (username, password) => {
     try {
       const user = await loginService.login({ username, password });
+      setUser(user);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
       blogService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
       dispatch(displayNotification(`${user.name} logged in`));
     } catch (exception) {
       dispatch(displayNotification("wrong username or password", "error"));
@@ -61,31 +55,7 @@ const App = () => {
       <div>
         <h2>log in to application</h2>
         <Notification />
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              id="username"
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              id="password"
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button id="login-button" type="submit">
-            login
-          </button>
-        </form>
+        <LoginForm onLogin={login} />
       </div>
     );
   }
