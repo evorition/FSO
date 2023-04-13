@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import loginService from "../services/login";
-import userService from "../services/user";
+import storageService from "../services/storage";
 
 import { displayNotification } from "./notificationReducer";
 
@@ -20,7 +20,7 @@ const userSlice = createSlice({
 
 export const loadUser = () => {
   return (dispatch) => {
-    const user = userService.getUser();
+    const user = storageService.getUser();
     dispatch(setUser(user));
   };
 };
@@ -29,7 +29,7 @@ export const login = (username, password) => {
   return async (dispatch) => {
     try {
       const user = await loginService.login({ username, password });
-      userService.setUser(user);
+      storageService.setUser(user);
 
       dispatch(setUser(user));
       dispatch(displayNotification(`${user.name} logged in`));
@@ -42,7 +42,7 @@ export const login = (username, password) => {
 export const logout = () => {
   return (dispatch) => {
     dispatch(resetUser());
-    userService.clearUser();
+    storageService.clearUser();
   };
 };
 

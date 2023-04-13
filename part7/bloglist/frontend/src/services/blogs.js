@@ -1,14 +1,14 @@
 import axios from "axios";
 
-import userService from "./user";
+import storageService from "./storage";
 
 const baseUrl = "/api/blogs";
 
 const getHeaders = () => {
   return {
     headers: {
-      Authorization: userService.getToken()
-        ? `Bearer ${userService.getToken()}`
+      Authorization: storageService.getToken()
+        ? `Bearer ${storageService.getToken()}`
         : null,
     },
   };

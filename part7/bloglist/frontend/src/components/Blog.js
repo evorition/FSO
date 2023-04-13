@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { likeBlog, removeBlog } from "../reducers/blogReducer";
 
-import userService from "../services/user";
+import storageService from "../services/storage";
 
 const Blog = ({ blog }) => {
   const blogStyle = {
@@ -14,7 +14,7 @@ const Blog = ({ blog }) => {
     marginBottom: 5,
   };
 
-  const user = userService.getUser();
+  const user = storageService.getUser();
   const canRemove = user && user.username === blog.user.username;
 
   const dispatch = useDispatch();
