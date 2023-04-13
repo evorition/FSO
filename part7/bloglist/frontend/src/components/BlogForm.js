@@ -3,14 +3,14 @@ import { useDispatch } from "react-redux";
 
 import { createBlog } from "../reducers/blogReducer";
 
-const BlogForm = () => {
+const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
-  const addBlog = (event) => {
+  const handleNewBlog = (event) => {
     event.preventDefault();
 
     dispatch(createBlog({ title, author, url }));
@@ -18,12 +18,14 @@ const BlogForm = () => {
     setTitle("");
     setAuthor("");
     setUrl("");
+
+    blogFormRef.current.toggleVisibility();
   };
 
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={handleNewBlog}>
         <div>
           title:
           <input

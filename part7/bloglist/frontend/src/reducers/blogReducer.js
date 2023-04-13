@@ -19,7 +19,6 @@ const blogSlice = createSlice({
       return state.map((s) => (s.id !== replaced.id ? s : replaced));
     },
     deleteBlog(state, action) {
-      console.log(action.payload);
       const id = action.payload;
       return state.filter((s) => s.id !== id);
     },
