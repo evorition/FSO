@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { createBlog } from "../reducers/blogReducer";
-import { displayNotification } from "../reducers/notificationReducer";
 
 const BlogForm = () => {
   const dispatch = useDispatch();
@@ -15,7 +14,6 @@ const BlogForm = () => {
     event.preventDefault();
 
     dispatch(createBlog({ title, author, url }));
-    dispatch(displayNotification(`a new blog ${title} by ${author} added`));
 
     setTitle("");
     setAuthor("");

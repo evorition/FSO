@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import blogService from "../services/blogs";
 
+import { displayNotification } from "./notificationReducer";
+
 const blogSlice = createSlice({
   name: "blogs",
   initialState: [],
@@ -24,8 +26,15 @@ export const initializeBlogs = () => {
 
 export const createBlog = (object) => {
   return async (dispatch) => {
-    const blog = await blogService.create(object);
-    dispatch(addBlog(blog));
+    try {
+      const blog = await blogService.create(object);
+      dispatch(addBlog(blog));
+      dispatch(
+        displayNotification(`a new blog ${blog.title} by ${blog.author} added`)
+      );
+    } catch (error) {
+      dispatch(displayNotification(error.response.data.error, "error"));
+    }
   };
 };
 
