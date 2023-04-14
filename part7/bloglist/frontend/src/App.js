@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import UserList from "./components/UserList";
+import User from "./components/User";
 
 import { initializeBlogs } from "./reducers/blogReducer";
 import { loadUser, logout } from "./reducers/userReducer";
@@ -47,6 +48,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<UserList />} />
+        <Route path="/users/:id" element={<User />} />
       </Routes>
     </div>
   );
