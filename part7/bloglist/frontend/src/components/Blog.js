@@ -1,27 +1,19 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { likeBlog, removeBlog } from "../reducers/blogReducer";
 
-import storageService from "../services/storage";
+const Blog = () => {
+  const blogId = useParams().id;
 
-const Blog = ({ blog }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
+  const { blog, user } = useSelector(({ blogs, user }) => {
+    const blog = blogs.find((blog) => blog.id === blogId);
+    return { blog, user };
+  });
 
-  const user = storageService.getUser();
   const canRemove = user && user.username === blog.user.username;
 
   const dispatch = useDispatch();
-
-  const [expand, setExpand] = useState(false);
-
-  const showWhenExpanded = { display: expand ? "" : "none" };
 
   const handleLike = () => {
     dispatch(likeBlog(blog));
@@ -36,23 +28,20 @@ const Blog = ({ blog }) => {
     }
   };
 
+  if (!blog) {
+    return null;
+  }
+
   return (
-    <div style={blogStyle} className="blog">
-      {blog.title} {blog.author}
-      <button onClick={() => setExpand(!expand)}>
-        {expand ? "hide" : "show"}
-      </button>
-      <div style={showWhenExpanded} className="expanded-blog">
-        <div>
-          <a href={blog.url}>{blog.url}</a>
-        </div>
-        <div>
-          likes {blog.likes}
-          <button onClick={handleLike}>like</button>
-        </div>
-        <div>{blog.user.name}</div>
-        {canRemove && <button onClick={handleRemove}>remove</button>}
+    <div className="blog">
+      <h2>{blog.title}</h2>
+      <a href={`https://${blog.url}`}>{blog.url}</a>
+      <div>
+        likes {blog.likes}
+        <button onClick={handleLike}>like</button>
       </div>
+      <div>added by {blog.user.name}</div>
+      {canRemove && <button onClick={handleRemove}>remove</button>}
     </div>
   );
 };
