@@ -11,8 +11,6 @@ const Blog = () => {
     return { blog, user };
   });
 
-  const canRemove = user && user.username === blog.user.username;
-
   const dispatch = useDispatch();
 
   const handleLike = () => {
@@ -41,7 +39,9 @@ const Blog = () => {
         <button onClick={handleLike}>like</button>
       </div>
       <div>added by {blog.user.name}</div>
-      {canRemove && <button onClick={handleRemove}>remove</button>}
+      {user && user.username === blog.user.username && (
+        <button onClick={handleRemove}>remove</button>
+      )}
     </div>
   );
 };
