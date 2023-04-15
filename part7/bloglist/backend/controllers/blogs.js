@@ -66,4 +66,22 @@ blogsRouter.delete("/:id", userExtractor, async (request, response) => {
   response.status(204).end();
 });
 
+blogsRouter.post("/:id/comments", async (request, response) => {
+  const blog = await Blog.findById(request.params.id);
+
+  if (!blog) {
+    return response.sendStatus(404);
+  }
+
+  blog.comments = blog.comments.concat(request.body.comment);
+  await blog.save();
+
+  const updatedBlog = await Blog.findById(blog._id).populate("user", {
+    username: 1,
+    name: 1,
+  });
+
+  response.status(201).json(updatedBlog);
+});
+
 module.exports = blogsRouter;
