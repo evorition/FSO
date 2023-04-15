@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
 import Home from "./components/Home";
 import Notification from "./components/Notification";
@@ -40,12 +40,20 @@ const App = () => {
 
   return (
     <div>
+      <div style={{ backgroundColor: "grey", padding: 4, marginBottom: 8 }}>
+        <Link style={{ padding: 2 }} to="/">
+          blogs
+        </Link>
+        <Link style={{ padding: 2 }} to="/users">
+          users
+        </Link>
+        {user.name} logged in
+        <button style={{ margin: 2 }} onClick={handleLogout}>
+          logout
+        </button>
+      </div>
       <h2>blogs</h2>
       <Notification />
-      <p>
-        {user.name} logged in
-        <button onClick={handleLogout}>logout</button>
-      </p>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<UserList />} />
