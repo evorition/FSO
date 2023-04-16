@@ -8,12 +8,13 @@ const Home = () => {
   const blogFormRef = useRef();
 
   return (
-    <div>
+    <>
+      <h1>Blogs</h1>
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm blogFormRef={blogFormRef} />
       </Togglable>
       <BlogList />
-    </div>
+    </>
   );
 };
 

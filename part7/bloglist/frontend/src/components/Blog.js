@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { Button, Form } from "react-bootstrap";
 
 import { likeBlog, removeBlog, commentBlog } from "../reducers/blogReducer";
 
@@ -45,17 +46,23 @@ const Blog = () => {
       <a href={`https://${blog.url}`}>{blog.url}</a>
       <div>
         likes {blog.likes}
-        <button onClick={handleLike}>like</button>
+        <Button size="sm" onClick={handleLike}>
+          like
+        </Button>
       </div>
       <div>added by {blog.user.name}</div>
       {user && user.username === blog.user.username && (
-        <button onClick={handleRemove}>remove</button>
+        <Button size="sm" variant="danger" onClick={handleRemove}>
+          remove
+        </Button>
       )}
       <h3>Comments</h3>
-      <form onSubmit={handleComment}>
-        <input name="comment" />
-        <button type="submit">add comment</button>
-      </form>
+      <Form onSubmit={handleComment}>
+        <Form.Control className="mb-3 w-25" type="text" name="comment" />
+        <Button size="sm" type="submit">
+          add comment
+        </Button>
+      </Form>
       <ul>
         {blog.comments.map((comment, index) => (
           <li key={index}>{comment}</li>
