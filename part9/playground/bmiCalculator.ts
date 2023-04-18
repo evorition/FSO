@@ -1,24 +1,24 @@
-import { isNotNumber } from "./utils";
+// import { isNotNumber } from "./utils";
 
-interface bmiValues {
-  height: number;
-  weight: number;
-}
+// interface bmiValues {
+//   height: number;
+//   weight: number;
+// }
 
-const parseArguments = (args: string[]): bmiValues => {
-  if (args.length < 4) throw new Error("Not enough arguments");
-  if (args.length > 4) throw new Error("Too much arguments");
-  if (!isNotNumber(args[2]) && !isNotNumber(args[3])) {
-    return {
-      height: Number(args[2]),
-      weight: Number(args[3]),
-    };
-  } else {
-    throw new Error("Provided values are not numbers");
-  }
-};
+// const parseArguments = (args: string[]): bmiValues => {
+//   if (args.length < 4) throw new Error("Not enough arguments");
+//   if (args.length > 4) throw new Error("Too much arguments");
+//   if (!isNotNumber(args[2]) && !isNotNumber(args[3])) {
+//     return {
+//       height: Number(args[2]),
+//       weight: Number(args[3]),
+//     };
+//   } else {
+//     throw new Error("Provided values are not numbers");
+//   }
+// };
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   const bmi = weight / (height / 100) ** 2;
 
   if (bmi < 16.0) {
@@ -35,18 +35,18 @@ const calculateBmi = (height: number, weight: number): string => {
     return "Obese (Class I)";
   } else if (bmi >= 35.0 && bmi <= 39.9) {
     return "Obese (Class II)";
-  } else if (bmi >= 40.0) {
+  } else {
     return "Obese (Class III)";
   }
 };
 
-try {
-  const { height, weight } = parseArguments(process.argv);
-  console.log(calculateBmi(height, weight));
-} catch (error: unknown) {
-  let errorMessage = "Something bad happened";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
-  }
-  console.log(errorMessage);
-}
+// try {
+//   const { height, weight } = parseArguments(process.argv);
+//   console.log(calculateBmi(height, weight));
+// } catch (error: unknown) {
+//   let errorMessage = "Something bad happened";
+//   if (error instanceof Error) {
+//     errorMessage += " Error: " + error.message;
+//   }
+//   console.log(errorMessage);
+// }
