@@ -5,3 +5,5 @@ export interface DiaryEntry {
   visibility: string;
   comment: string;
 }
+
+export type NewDiartyEntry = Omit<DiaryEntry, "id">;
