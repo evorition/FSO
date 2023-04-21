@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 
 import diaryService from "./diaryService";
-import { DiaryEntry } from "./types";
+import { DiaryEntry, Weather, Visibility } from "./types";
 import axios from "axios";
 
 function App() {
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
   const [date, setDate] = useState("");
-  const [visibility, setVisibility] = useState("");
-  const [weather, setWeather] = useState("");
+  const [visibility, setVisibility] = useState<Visibility>(Visibility.Great);
+  const [weather, setWeather] = useState<Weather>(Weather.Sunny);
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
 
@@ -31,6 +31,10 @@ function App() {
           setError(error);
         }
       });
+    setDate("");
+    setVisibility(Visibility.Great);
+    setWeather(Weather.Sunny);
+    setComment("");
   };
 
   return (
@@ -39,25 +43,108 @@ function App() {
       {error ? <div style={{ color: "red" }}>{error}</div> : null}
       <form onSubmit={diaryCreation}>
         <div>
-          date{" "}
+          date
           <input
+            type="date"
             value={date}
             onChange={(event) => setDate(event.target.value)}
           />
         </div>
         <div>
           visibility
-          <input
-            value={visibility}
-            onChange={(event) => setVisibility(event.target.value)}
-          />
+          <label>
+            <input
+              name="visibility"
+              type="radio"
+              value="great"
+              checked={visibility === "great"}
+              onChange={() => setVisibility(Visibility.Great)}
+            />
+            great
+          </label>
+          <label>
+            <input
+              name="visibility"
+              type="radio"
+              value="good"
+              checked={visibility === "good"}
+              onChange={() => setVisibility(Visibility.Good)}
+            />
+            good
+          </label>
+          <label>
+            <input
+              name="visibility"
+              type="radio"
+              value="ok"
+              checked={visibility === "ok"}
+              onChange={() => setVisibility(Visibility.Ok)}
+            />
+            ok
+          </label>
+          <label>
+            <input
+              name="visibility"
+              type="radio"
+              value="poor"
+              checked={visibility === "poor"}
+              onChange={() => setVisibility(Visibility.Poor)}
+            />
+            poor
+          </label>
         </div>
         <div>
           weather
-          <input
-            value={weather}
-            onChange={(event) => setWeather(event.target.value)}
-          />
+          <label>
+            <input
+              name="weather"
+              type="radio"
+              value="sunny"
+              checked={weather === "sunny"}
+              onChange={() => setWeather(Weather.Sunny)}
+            />
+            sunny
+          </label>
+          <label>
+            <input
+              name="weather"
+              type="radio"
+              value=""
+              checked={weather === "rainy"}
+              onChange={() => setWeather(Weather.Rainy)}
+            />
+            rainy
+          </label>
+          <label>
+            <input
+              name="weather"
+              type="radio"
+              value="cloudy"
+              checked={weather === "cloudy"}
+              onChange={() => setWeather(Weather.Cloudy)}
+            />
+            cloudy
+          </label>
+          <label>
+            <input
+              name="weather"
+              type="radio"
+              value="stormy"
+              checked={weather === "stormy"}
+              onChange={() => setWeather(Weather.Stormy)}
+            />
+            stormy
+          </label>
+          <label>
+            <input
+              name="weather"
+              type="radio"
+              value="windy"
+              checked={weather === "windy"}
+              onChange={() => setWeather(Weather.Windy)}
+            />
+            windy
+          </label>
         </div>
         <div>
           comment
