@@ -10,6 +10,16 @@ router.get("/", (_req, res) => {
   res.json(patientService.getNonSensetiveEntries());
 });
 
+router.get("/:id", (req, res) => {
+  const patient = patientService.getEntry(req.params.id);
+
+  if (patient) {
+    res.json(patient);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
 router.post("/", (req, res) => {
   try {
     const newPatientEntry = toNewPatient(req.body);
