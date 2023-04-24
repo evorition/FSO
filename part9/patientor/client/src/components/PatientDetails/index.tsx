@@ -8,6 +8,11 @@ import patientService from "../../services/patients";
 import { Patient } from "../../types";
 
 const PatientDetails = () => {
+  const style = {
+    marginTop: "24px",
+    marginBottom: "16px",
+  };
+
   const [patient, setPatient] = useState<Patient>();
 
   const { id } = useParams();
@@ -37,10 +42,7 @@ const PatientDetails = () => {
 
   return (
     <div>
-      <Typography
-        variant="h5"
-        style={{ marginTop: "8px", marginBottom: "8px" }}
-      >
+      <Typography variant="h5" style={style}>
         {patient.name}
         {genderIcon}
       </Typography>
@@ -49,6 +51,23 @@ const PatientDetails = () => {
       ) : null}
       {patient.ssn ? <Box>SSN: {patient.ssn}</Box> : null}
       <Box>Occupation: {patient.occupation}</Box>
+      <Typography variant="h6" style={style}>
+        entries
+      </Typography>
+      {patient.entries.map((entry) => (
+        <Box key={entry.id}>
+          <p>
+            {entry.date} <em>{entry.description}</em>
+          </p>
+          {entry.diagnosisCodes && (
+            <ul>
+              {entry.diagnosisCodes.map((code, index) => (
+                <li key={index}>{code}</li>
+              ))}
+            </ul>
+          )}
+        </Box>
+      ))}
     </div>
   );
 };
