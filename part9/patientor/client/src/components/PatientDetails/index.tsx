@@ -4,8 +4,9 @@ import { Box, Typography } from "@mui/material";
 import { Female, Male, Transgender } from "@mui/icons-material";
 
 import patientService from "../../services/patients";
+import diagnosisService from "../../services/diagnosis";
 
-import { Patient } from "../../types";
+import { Patient, Diagnosis } from "../../types";
 
 const PatientDetails = () => {
   const style = {
@@ -14,6 +15,7 @@ const PatientDetails = () => {
   };
 
   const [patient, setPatient] = useState<Patient>();
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
 
   const { id } = useParams();
   let genderIcon;
@@ -22,6 +24,8 @@ const PatientDetails = () => {
     if (id) {
       patientService.getOne(id).then((patient) => setPatient(patient));
     }
+
+    diagnosisService.getAll().then((diagnoses) => setDiagnoses(diagnoses));
   }, [id]);
 
   if (!patient) {
@@ -62,7 +66,10 @@ const PatientDetails = () => {
           {entry.diagnosisCodes && (
             <ul>
               {entry.diagnosisCodes.map((code, index) => (
-                <li key={index}>{code}</li>
+                <li key={index}>
+                  {code}{" "}
+                  {diagnoses.find((diagnose) => diagnose.code === code)?.name}
+                </li>
               ))}
             </ul>
           )}
