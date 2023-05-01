@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import { Female, Male, Transgender } from "@mui/icons-material";
 
+import EntryDetails from "../EntryDetails";
+
 import patientService from "../../services/patients";
 import diagnosisService from "../../services/diagnosis";
 
@@ -59,21 +61,7 @@ const PatientDetails = () => {
         entries
       </Typography>
       {patient.entries.map((entry) => (
-        <Box key={entry.id}>
-          <p>
-            {entry.date} <em>{entry.description}</em>
-          </p>
-          {entry.diagnosisCodes && (
-            <ul>
-              {entry.diagnosisCodes.map((code, index) => (
-                <li key={index}>
-                  {code}{" "}
-                  {diagnoses.find((diagnose) => diagnose.code === code)?.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </Box>
+        <EntryDetails key={entry.id} entry={entry} diagnoses={diagnoses} />
       ))}
     </div>
   );
