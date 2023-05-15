@@ -6,6 +6,7 @@ import {
   PatientEntry,
   NonSensetivePatientEntry,
   NewPatientEntry,
+  NewEntry,
 } from "../types";
 
 const getNonSensetiveEntries = (): NonSensetivePatientEntry[] => {
@@ -35,8 +36,21 @@ const addPatient = (entry: NewPatientEntry): PatientEntry => {
   return newPatientEntry;
 };
 
+const addEntry = (id: string, entry: NewEntry): PatientEntry | undefined => {
+  const newEntry = {
+    id: uuidv4(),
+    ...entry,
+  };
+
+  const patientEntry = getEntry(id);
+  patientEntry?.entries.push(newEntry);
+
+  return patientEntry;
+};
+
 export default {
   getNonSensetiveEntries,
   addPatient,
   getEntry,
+  addEntry,
 };

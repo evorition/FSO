@@ -2,7 +2,7 @@ import express from "express";
 
 import patientService from "../services/patientService";
 
-import toNewPatient from "../utils";
+import { toNewPatientEntry, toNewEntry } from "../utils";
 
 const router = express.Router();
 
@@ -22,11 +22,26 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
   try {
-    const newPatientEntry = toNewPatient(req.body);
+    const newPatientEntry = toNewPatientEntry(req.body);
     const addedEntry = patientService.addPatient(newPatientEntry);
     res.json(addedEntry);
   } catch (error: unknown) {
     let errorMessage = "Something went wrong.";
+    if (error instanceof Error) {
+      errorMessage += "Error: " + error.message;
+    }
+    console.log(errorMessage);
+    res.status(400).json({ error: errorMessage });
+  }
+});
+
+router.post("/:id/entries", (req, res) => {
+  try {
+    const newEntry = toNewEntry(req.body);
+    const addedEntry = patientService.addEntry(req.params.id, newEntry);
+    res.json(addedEntry);
+  } catch (error: unknown) {
+    let errorMessage = "Something went wrong";
     if (error instanceof Error) {
       errorMessage += "Error: " + error.message;
     }
