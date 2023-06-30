@@ -37,8 +37,14 @@ router.post("/", (req, res) => {
 
 router.post("/:id/entries", (req, res) => {
   try {
+    const patient = patientService.getEntry(req.params.id);
+
+    if (!patient) {
+      throw new Error("Bad id");
+    }
+
     const newEntry = toNewEntry(req.body);
-    const addedEntry = patientService.addEntry(req.params.id, newEntry);
+    const addedEntry = patientService.addEntry(patient, newEntry);
     res.json(addedEntry);
   } catch (error: unknown) {
     let errorMessage = "Something went wrong";
