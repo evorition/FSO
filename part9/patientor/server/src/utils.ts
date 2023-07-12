@@ -114,10 +114,6 @@ const isHealthCheckRating = (value: unknown): value is HealthCheckRating => {
 };
 
 const parseHealthCheckRating = (value: unknown): HealthCheckRating => {
-  if (!isString(value)) {
-    throw new Error("Invalid health check rating");
-  }
-
   const rating = Number(value);
 
   if (isNaN(rating) || !isHealthCheckRating(rating)) {

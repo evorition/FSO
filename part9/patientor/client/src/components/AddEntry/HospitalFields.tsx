@@ -1,0 +1,36 @@
+import { Dispatch, SetStateAction } from "react";
+import { Input, TextField } from "@mui/material";
+
+interface Props {
+  dischargeDate: string;
+  setDischargeDate: Dispatch<SetStateAction<string>>;
+  criteria: string;
+  setCriteria: Dispatch<SetStateAction<string>>;
+}
+
+const HospitalFields = ({
+  dischargeDate,
+  setDischargeDate,
+  criteria,
+  setCriteria,
+}: Props) => {
+  return (
+    <div>
+      <Input
+        fullWidth
+        type="date"
+        value={dischargeDate}
+        onChange={({ target }) => setDischargeDate(target.value)}
+      />
+      <TextField
+        fullWidth
+        variant="standard"
+        label="Criteria"
+        value={criteria}
+        onChange={({ target }) => setCriteria(target.value)}
+      />
+    </div>
+  );
+};
+
+export default HospitalFields;
