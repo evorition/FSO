@@ -3,11 +3,12 @@ import {
   Select,
   MenuItem,
   TextField,
-  Input,
   Button,
   SelectChangeEvent,
   Alert,
-  Divider,
+  Typography,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 
 import HealthCheckFields from "./HealthCheckFields";
@@ -127,74 +128,107 @@ const AddEntryForm = ({ onSubmit, onCancel, diagnoses, error }: Props) => {
 
   return (
     <>
-      <Select
-        value={entryType}
-        onChange={({ target }) => setEntryType(target.value)}
+      <Typography
+        component="span"
+        sx={{ display: "flex", alignItems: "center", gap: "4px" }}
       >
-        <MenuItem selected={true} value={"HealthCheck"}>
-          Health check entry
-        </MenuItem>
-        <MenuItem value={"OccupationalHealthcare"}>
-          Occupational healthcare entry
-        </MenuItem>
-        <MenuItem value={"Hospital"}>Hospital entry</MenuItem>
-      </Select>
-      <Divider />
-      {error && <Alert severity="error">{error}</Alert>}
-      <form onSubmit={addEntry}>
+        New
+        <Select
+          variant="standard"
+          value={entryType}
+          onChange={({ target }) => setEntryType(target.value)}
+          sx={{ marginTop: "8px", marginBottom: "8px" }}
+        >
+          <MenuItem selected={true} value={"HealthCheck"}>
+            Health check entry
+          </MenuItem>
+          <MenuItem value={"OccupationalHealthcare"}>
+            Occupational healthcare entry
+          </MenuItem>
+          <MenuItem value={"Hospital"}>Hospital entry</MenuItem>
+        </Select>
+        Entry
+      </Typography>
+      {error && (
+        <Alert severity="error" style={{ marginBottom: "8px" }}>
+          {error}
+        </Alert>
+      )}
+      <form
+        onSubmit={addEntry}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+          border: "1px dashed",
+          padding: "12px",
+        }}
+      >
         <TextField
           fullWidth
+          required
           variant="standard"
           label="Description"
           value={description}
           onChange={({ target }) => setDescription(target.value)}
         />
-        <Input
+        <TextField
           fullWidth
+          required
+          variant="standard"
+          label="Date"
           type="date"
+          InputLabelProps={{ shrink: true }}
           value={date}
           onChange={({ target }) => setDate(target.value)}
         />
         <TextField
           fullWidth
+          required
           variant="standard"
           label="Specialist"
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
-        <Select
-          multiple
-          value={diagnosisCodes}
-          onChange={handleDiagnosisChange}
-        >
-          {diagnoses.map((diagnose) => {
-            return (
-              <MenuItem key={diagnose.name} value={diagnose.code}>
-                {diagnose.code}
-              </MenuItem>
-            );
-          })}
-        </Select>
+        <FormControl variant="standard">
+          <InputLabel>Diagnosis codes</InputLabel>
+          <Select
+            fullWidth
+            multiple
+            value={diagnosisCodes}
+            onChange={handleDiagnosisChange}
+          >
+            {diagnoses.map((diagnose) => {
+              return (
+                <MenuItem key={diagnose.name} value={diagnose.code}>
+                  {diagnose.code}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
         {renderSelectedEntryType()}
-        <Button
-          style={{
-            float: "left",
-          }}
-          variant="contained"
-          color="error"
-          onClick={onCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          style={{
-            float: "right",
-          }}
-          type="submit"
-          variant="contained"
-        >
-          Add
-        </Button>
+        <div>
+          <Button
+            style={{
+              float: "left",
+            }}
+            variant="contained"
+            color="error"
+            onClick={onCancel}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={{
+              float: "right",
+            }}
+            type="submit"
+            variant="contained"
+          >
+            Add
+          </Button>
+        </div>
       </form>
     </>
   );

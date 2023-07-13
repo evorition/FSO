@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Input, TextField } from "@mui/material";
+import { TextField, InputLabel } from "@mui/material";
 
 interface Props {
   employerName: string;
@@ -19,27 +19,35 @@ const OccupationalHealthcareFields = ({
   setEndDate,
 }: Props) => {
   return (
-    <div>
+    <>
       <TextField
         fullWidth
+        required
         variant="standard"
         label="Employer name"
         value={employerName}
         onChange={({ target }) => setEmployerName(target.value)}
       />
-      <Input
-        fullWidth
+      <InputLabel>Sickleave</InputLabel>
+      <TextField
+        sx={{ marginLeft: "16px" }}
+        label="Start"
+        variant="standard"
         type="date"
+        InputLabelProps={{ shrink: true }}
         value={startDate}
         onChange={({ target }) => setStartDate(target.value)}
       />
-      <Input
-        fullWidth
+      <TextField
+        sx={{ marginLeft: "16px" }}
+        label="End"
+        variant="standard"
         type="date"
+        InputLabelProps={{ shrink: true }}
         value={endDate}
         onChange={({ target }) => setEndDate(target.value)}
       />
-    </div>
+    </>
   );
 };
 

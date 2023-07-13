@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Input, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 
 interface Props {
   dischargeDate: string;
@@ -16,14 +16,19 @@ const HospitalFields = ({
 }: Props) => {
   return (
     <div>
-      <Input
+      <TextField
         fullWidth
+        required
+        variant="standard"
+        label="Discharge date"
+        InputLabelProps={{ shrink: true }}
         type="date"
         value={dischargeDate}
         onChange={({ target }) => setDischargeDate(target.value)}
       />
       <TextField
         fullWidth
+        required
         variant="standard"
         label="Criteria"
         value={criteria}

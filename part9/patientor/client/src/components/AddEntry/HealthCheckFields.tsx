@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Select, MenuItem } from "@mui/material";
+import { TextField, MenuItem } from "@mui/material";
 
 import { HealthCheckRating } from "../../types";
 
@@ -18,7 +18,12 @@ const HealthCheckFields = ({
 
   return (
     <div>
-      <Select
+      <TextField
+        fullWidth
+        required
+        select
+        label="Health check rating"
+        variant="standard"
         value={healthCheckRating}
         onChange={({ target }) => setHealthCheckRating(Number(target.value))}
       >
@@ -31,7 +36,7 @@ const HealthCheckFields = ({
             </MenuItem>
           );
         })}
-      </Select>
+      </TextField>
     </div>
   );
 };
